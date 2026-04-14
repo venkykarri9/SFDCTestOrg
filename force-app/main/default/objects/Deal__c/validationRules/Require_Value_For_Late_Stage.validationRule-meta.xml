@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Require_Value_For_Late_Stage</fullName>
+    <active>true</active>
+    <description>Requires Deal Value for stages beyond Qualification</description>
+    <errorConditionFormula>AND(
+    OR(
+        ISPICKVAL(Deal_Stage__c, "Proposal"),
+        ISPICKVAL(Deal_Stage__c, "Negotiation"),
+        ISPICKVAL(Deal_Stage__c, "Closed Won")
+    ),
+    ISBLANK(Deal_Value__c)
+)</errorConditionFormula>
+    <errorDisplayField>Deal_Value__c</errorDisplayField>
+    <errorMessage>Deal Value is required for stages beyond Qualification</errorMessage>
+</ValidationRule>

@@ -1,0 +1,245 @@
+<template>
+    <lightning-card title="Forecast Dashboard" icon-name="standard:forecasts">
+        <div class="slds-p-around_medium">
+            <!-- Loading Spinner -->
+            <template lwc:if={isLoading}>
+                <div class="slds-align_absolute-center slds-p-around_large">
+                    <lightning-spinner alternative-text="Loading forecasts..." size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- Error State -->
+            <template lwc:if={error}>
+                <div class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_medium" role="alert">
+                    <span class="slds-assistive-text">Error</span>
+                    <h2>Error loading forecast data. Please try again.</h2>
+                </div>
+            </template>
+
+            <template lwc:if={isLoading}>
+            </template>
+            <template lwc:elseif={hasForecasts}>
+                <!-- Summary Stat Cards -->
+                <div class="slds-grid slds-gutters slds-wrap slds-m-bottom_large">
+                    <!-- Total Target -->
+                    <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                        <div class="slds-box slds-box_small slds-theme_default stat-card">
+                            <div class="slds-text-title_caps slds-m-bottom_xx-small slds-text-color_weak">
+                                Total Target
+                            </div>
+                            <div class="slds-text-heading_large">
+                                <lightning-formatted-number
+                                    value={totalTarget}
+                                    format-style="currency"
+                                    currency-code="USD"
+                                    maximum-fraction-digits="0"
+                                ></lightning-formatted-number>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Committed -->
+                    <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                        <div class="slds-box slds-box_small slds-theme_default stat-card">
+                            <div class="slds-text-title_caps slds-m-bottom_xx-small slds-text-color_weak">
+                                Committed
+                            </div>
+                            <div class="slds-text-heading_large">
+                                <lightning-formatted-number
+                                    value={totalCommitted}
+                                    format-style="currency"
+                                    currency-code="USD"
+                                    maximum-fraction-digits="0"
+                                ></lightning-formatted-number>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Best Case -->
+                    <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                        <div class="slds-box slds-box_small slds-theme_default stat-card">
+                            <div class="slds-text-title_caps slds-m-bottom_xx-small slds-text-color_weak">
+                                Best Case
+                            </div>
+                            <div class="slds-text-heading_large">
+                                <lightning-formatted-number
+                                    value={totalBestCase}
+                                    format-style="currency"
+                                    currency-code="USD"
+                                    maximum-fraction-digits="0"
+                                ></lightning-formatted-number>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actual -->
+                    <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                        <div class="slds-box slds-box_small slds-theme_default stat-card">
+                            <div class="slds-text-title_caps slds-m-bottom_xx-small slds-text-color_weak">
+                                Actual
+                            </div>
+                            <div class="slds-text-heading_large slds-text-color_success">
+                                <lightning-formatted-number
+                                    value={totalActual}
+                                    format-style="currency"
+                                    currency-code="USD"
+                                    maximum-fraction-digits="0"
+                                ></lightning-formatted-number>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Territory Breakdown Table -->
+                <h2 class="slds-text-heading_small slds-m-bottom_small">Territory Breakdown</h2>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Territory">Territory</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Target">Target</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Committed">Committed</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Best Case">Best Case</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Actual">Actual</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Status">Status</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Actions">Actions</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={forecasts} for:item="forecast">
+                            <tr key={forecast.Id} class="slds-hint-parent">
+                                <!-- Territory -->
+                                <td data-label="Territory">
+                                    <div class="slds-truncate" title={forecast.Territory__r.Name}>
+                                        <template lwc:if={forecast.Territory__r}>
+                                            {forecast.Territory__r.Name}
+                                        </template>
+                                    </div>
+                                </td>
+
+                                <!-- Target -->
+                                <td data-label="Target">
+                                    <div class="slds-truncate">
+                                        <lightning-formatted-number
+                                            value={forecast.Target_Amount__c}
+                                            format-style="currency"
+                                            currency-code="USD"
+                                            maximum-fraction-digits="0"
+                                        ></lightning-formatted-number>
+                                    </div>
+                                </td>
+
+                                <!-- Committed -->
+                                <td data-label="Committed">
+                                    <div class="slds-truncate">
+                                        <lightning-formatted-number
+                                            value={forecast.Committed_Amount__c}
+                                            format-style="currency"
+                                            currency-code="USD"
+                                            maximum-fraction-digits="0"
+                                        ></lightning-formatted-number>
+                                    </div>
+                                </td>
+
+                                <!-- Best Case -->
+                                <td data-label="Best Case">
+                                    <div class="slds-truncate">
+                                        <lightning-formatted-number
+                                            value={forecast.Best_Case_Amount__c}
+                                            format-style="currency"
+                                            currency-code="USD"
+                                            maximum-fraction-digits="0"
+                                        ></lightning-formatted-number>
+                                    </div>
+                                </td>
+
+                                <!-- Actual -->
+                                <td data-label="Actual">
+                                    <div class="slds-truncate">
+                                        <lightning-formatted-number
+                                            value={forecast.Actual_Amount__c}
+                                            format-style="currency"
+                                            currency-code="USD"
+                                            maximum-fraction-digits="0"
+                                        ></lightning-formatted-number>
+                                    </div>
+                                </td>
+
+                                <!-- Status -->
+                                <td data-label="Status">
+                                    <div class="slds-truncate">
+                                        <template lwc:if={forecast.Status__c}>
+                                            <template lwc:if={forecast.isDraft}>
+                                                <span class="slds-badge slds-badge_lightest">Draft</span>
+                                            </template>
+                                            <template lwc:elseif={forecast.isSubmitted}>
+                                                <span class="slds-badge slds-theme_warning">Submitted</span>
+                                            </template>
+                                            <template lwc:elseif={forecast.isApproved}>
+                                                <span class="slds-badge slds-theme_success">Approved</span>
+                                            </template>
+                                            <template lwc:else>
+                                                <span class="slds-badge">{forecast.Status__c}</span>
+                                            </template>
+                                        </template>
+                                    </div>
+                                </td>
+
+                                <!-- Actions -->
+                                <td data-label="Actions">
+                                    <div class="slds-truncate">
+                                        <template lwc:if={forecast.isDraft}>
+                                            <lightning-button
+                                                label="Submit"
+                                                variant="brand"
+                                                size="small"
+                                                data-id={forecast.Id}
+                                                onclick={handleSubmit}
+                                            ></lightning-button>
+                                        </template>
+                                        <template lwc:elseif={forecast.isSubmitted}>
+                                            <lightning-button
+                                                label="Approve"
+                                                variant="success"
+                                                size="small"
+                                                data-id={forecast.Id}
+                                                onclick={handleSubmit}
+                                            ></lightning-button>
+                                        </template>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </template>
+            <template lwc:else>
+                <!-- Empty State -->
+                <div class="slds-illustration slds-illustration_small slds-p-around_large">
+                    <div class="slds-align_absolute-center">
+                        <div class="slds-text-longform">
+                            <h3 class="slds-text-heading_medium">No Forecast Data</h3>
+                            <p class="slds-text-body_regular slds-text-color_weak">
+                                No forecast data is available for the current period.
+                                Forecasts will appear here once they are created.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

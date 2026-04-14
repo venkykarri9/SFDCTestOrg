@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Price_Comparison__c</fullName>
+    <label>Price Comparison</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Lower</fullName>
+                <default>false</default>
+                <label>Lower</label>
+            </value>
+            <value>
+                <fullName>Same</fullName>
+                <default>false</default>
+                <label>Same</label>
+            </value>
+            <value>
+                <fullName>Higher</fullName>
+                <default>false</default>
+                <label>Higher</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

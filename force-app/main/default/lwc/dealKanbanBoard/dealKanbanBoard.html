@@ -1,0 +1,125 @@
+<template>
+    <lightning-card title="Deal Pipeline" icon-name="standard:kanban">
+        <div class="slds-p-around_medium">
+            <!-- Loading Spinner -->
+            <template lwc:if={isLoading}>
+                <div class="slds-align_absolute-center slds-p-around_large">
+                    <lightning-spinner alternative-text="Loading deals..." size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- Error State -->
+            <template lwc:if={error}>
+                <div class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_medium" role="alert">
+                    <span class="slds-assistive-text">Error</span>
+                    <h2>Error loading deals. Please try again.</h2>
+                </div>
+            </template>
+
+            <!-- Empty State -->
+            <template lwc:if={isLoading}>
+            </template>
+            <template lwc:elseif={hasDeals}>
+                <!-- Kanban Board -->
+                <div class="slds-grid slds-gutters_x-small slds-scrollable_x kanban-board">
+                    <template for:each={columns} for:item="column">
+                        <div
+                            key={column.key}
+                            class="slds-col kanban-column"
+                            data-stage={column.stage}
+                            ondragover={handleDragOver}
+                            ondrop={handleDrop}
+                        >
+                            <!-- Column Header -->
+                            <div class="slds-box slds-box_x-small slds-theme_shade slds-m-bottom_x-small column-header">
+                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                    <h3 class="slds-text-heading_x-small slds-truncate">{column.stage}</h3>
+                                    <span class="slds-badge slds-badge_inverse">{column.count}</span>
+                                </div>
+                            </div>
+
+                            <!-- Deal Cards -->
+                            <div class="column-body slds-scrollable_y">
+                                <template for:each={column.deals} for:item="deal">
+                                    <div
+                                        key={deal.Id}
+                                        class="slds-box slds-box_x-small slds-m-bottom_xx-small deal-card"
+                                        data-id={deal.Id}
+                                        draggable="true"
+                                        onclick={handleDealClick}
+                                        ondragstart={handleDragStart}
+                                    >
+                                        <!-- Deal Name -->
+                                        <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start slds-m-bottom_xx-small">
+                                            <p class="slds-text-body_regular slds-truncate deal-name">
+                                                <strong>{deal.Name}</strong>
+                                            </p>
+                                            <!-- Health Indicator -->
+                                            <template lwc:if={deal.Deal_Health__c}>
+                                                <span class="health-dot" data-health={deal.Deal_Health__c}></span>
+                                            </template>
+                                        </div>
+
+                                        <!-- Deal Value -->
+                                        <p class="slds-text-body_small slds-m-bottom_xx-small">
+                                            <lightning-icon icon-name="utility:moneybag" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                                            <lightning-formatted-number
+                                                value={deal.Deal_Value__c}
+                                                format-style="currency"
+                                                currency-code="USD"
+                                                maximum-fraction-digits="0"
+                                            ></lightning-formatted-number>
+                                        </p>
+
+                                        <!-- Account Name -->
+                                        <template lwc:if={deal.Account__r}>
+                                            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_xx-small slds-truncate">
+                                                <lightning-icon icon-name="standard:account" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                                                {deal.Account__r.Name}
+                                            </p>
+                                        </template>
+
+                                        <!-- Close Date -->
+                                        <template lwc:if={deal.Close_Date__c}>
+                                            <p class="slds-text-body_small slds-text-color_weak">
+                                                <lightning-icon icon-name="utility:event" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                                                <lightning-formatted-date-time
+                                                    value={deal.Close_Date__c}
+                                                    year="numeric"
+                                                    month="short"
+                                                    day="2-digit"
+                                                ></lightning-formatted-date-time>
+                                            </p>
+                                        </template>
+                                    </div>
+                                </template>
+
+                                <!-- Empty Column State -->
+                                <template lwc:if={column.count}>
+                                </template>
+                                <template lwc:else>
+                                    <div class="slds-align_absolute-center slds-p-around_small">
+                                        <p class="slds-text-body_small slds-text-color_weak">No deals</p>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <template lwc:else>
+                <!-- Empty State (no deals at all) -->
+                <div class="slds-illustration slds-illustration_small slds-p-around_large">
+                    <div class="slds-align_absolute-center">
+                        <div class="slds-text-longform">
+                            <h3 class="slds-text-heading_medium">No Deals Found</h3>
+                            <p class="slds-text-body_regular slds-text-color_weak">
+                                There are no deals in the pipeline. Create a new deal to get started.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

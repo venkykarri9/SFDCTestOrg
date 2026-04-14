@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Deal_Health__c</fullName>
+    <label>Deal Health</label>
+    <type>Text</type>
+    <formula>IF(Win_Probability__c &gt;= 75,"Green",IF(Win_Probability__c &gt;= 40,"Yellow","Red"))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+</CustomField>

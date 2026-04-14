@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Allowed_Values__c</fullName>
+    <description>Semicolon-separated list of allowed picklist values for the configured Industry and Field API Name combination. Each token is trimmed of whitespace before use. Example: &quot;SaaS; PaaS; IaaS&quot; for Technology industry on Sub_Industry__c.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Allowed Values</label>
+    <length>2000</length>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>

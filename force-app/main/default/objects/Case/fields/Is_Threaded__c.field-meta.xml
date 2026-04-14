@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Threaded__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates that this Case was automatically linked to a parent Case by the Email-to-Case threading service based on a [Ref:XXXXXXXX] token in the Subject.</description>
+    <inlineHelpText>Set to true when the CaseThreadingService resolves and assigns a ParentId during before-insert processing.</inlineHelpText>
+    <label>Is Threaded</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

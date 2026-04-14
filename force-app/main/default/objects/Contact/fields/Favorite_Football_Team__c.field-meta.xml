@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Favorite_Football_Team__c</fullName>
+    <label>Favorite Football Team</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Eagles</fullName>
+                <default>false</default>
+                <label>Eagles</label>
+            </value>
+            <value>
+                <fullName>Bills</fullName>
+                <default>false</default>
+                <label>Bills</label>
+            </value>
+            <value>
+                <fullName>Rams</fullName>
+                <default>false</default>
+                <label>Rams</label>
+            </value>
+            <value>
+                <fullName>Packers</fullName>
+                <default>false</default>
+                <label>Packers</label>
+            </value>
+            <value>
+                <fullName>Bears</fullName>
+                <default>false</default>
+                <label>Bears</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

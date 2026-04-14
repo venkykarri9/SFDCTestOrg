@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Close_Date_Future</fullName>
+    <active>true</active>
+    <description>Close Date must be today or in the future for new records</description>
+    <errorConditionFormula>AND(
+    ISNEW(),
+    Close_Date__c &lt; TODAY()
+)</errorConditionFormula>
+    <errorDisplayField>Close_Date__c</errorDisplayField>
+    <errorMessage>Close Date must be today or in the future</errorMessage>
+</ValidationRule>

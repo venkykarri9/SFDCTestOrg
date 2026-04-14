@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <description>Creates initial activity record when a new deal is created</description>
+    <interviewLabel>New Deal Welcome Process {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>New Deal Welcome Process</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value><stringValue>LightningFlowBuilder</stringValue></value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Create_Initial_Activity</targetReference>
+        </connector>
+        <object>Deal__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+    <recordCreates>
+        <name>Create_Initial_Activity</name>
+        <label>Create Initial Activity</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <inputAssignments>
+            <field>Activity_Type__c</field>
+            <value><stringValue>Call</stringValue></value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Notes__c</field>
+            <value><stringValue>Initial outreach - new deal created</stringValue></value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Deal__c</field>
+            <value><elementReference>$Record.Id</elementReference></value>
+        </inputAssignments>
+        <object>Deal_Activity__c</object>
+    </recordCreates>
+</Flow>

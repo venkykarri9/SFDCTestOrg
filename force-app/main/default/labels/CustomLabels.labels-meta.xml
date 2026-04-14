@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Deal_Stage_Updated</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Deal Stage Updated Message</shortDescription>
+        <value>Deal stage has been updated successfully</value>
+    </labels>
+    <labels>
+        <fullName>Deal_Closed_Won_Message</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Deal Closed Won Message</shortDescription>
+        <value>Congratulations! Deal has been marked as Closed Won</value>
+    </labels>
+    <labels>
+        <fullName>Deal_Required_Field_Error</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Required Field Error</shortDescription>
+        <value>Please fill in all required fields before saving</value>
+    </labels>
+    <labels>
+        <fullName>Deal_Loading_Message</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Loading Message</shortDescription>
+        <value>Loading deal information...</value>
+    </labels>
+    <labels>
+        <fullName>Deal_No_Records_Found</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>No Records Found</shortDescription>
+        <value>No deals found for this account</value>
+    </labels>
+    <labels>
+        <fullName>Deal_Stale_Warning</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Stale Deal Warning</shortDescription>
+        <value>This deal has not been updated in over 30 days</value>
+    </labels>
+    <labels>
+        <fullName>Territory_Quota_Alert</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Territory Quota Alert</shortDescription>
+        <value>Territory is below 50% quota attainment with 1 week remaining</value>
+    </labels>
+    <labels>
+        <fullName>Forecast_Submitted</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Forecast Submitted</shortDescription>
+        <value>Forecast has been submitted for approval</value>
+    </labels>
+    <labels>
+        <fullName>Forecast_Approved</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Forecast Approved</shortDescription>
+        <value>Forecast approved successfully</value>
+    </labels>
+    <labels>
+        <fullName>Deal_Clone_Success</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Deal Clone Success</shortDescription>
+        <value>Deal cloned successfully. New deal ID: {0}</value>
+    </labels>
+</CustomLabels>

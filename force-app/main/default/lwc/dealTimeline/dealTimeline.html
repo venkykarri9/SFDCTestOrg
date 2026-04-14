@@ -1,0 +1,152 @@
+<template>
+    <lightning-card title="Deal Timeline" icon-name="standard:task">
+        <!-- Add Activity Button -->
+        <lightning-button
+            slot="actions"
+            label="Add Activity"
+            variant="brand"
+            icon-name="utility:add"
+            onclick={handleAddActivity}
+        ></lightning-button>
+
+        <div class="slds-p-around_medium">
+            <!-- Filter Buttons -->
+            <div class="slds-m-bottom_medium">
+                <lightning-button-group>
+                    <template for:each={computedFilters} for:item="filter">
+                        <lightning-button
+                            key={filter.value}
+                            label={filter.label}
+                            value={filter.value}
+                            variant={filter.variant}
+                            onclick={handleFilterChange}
+                        ></lightning-button>
+                    </template>
+                </lightning-button-group>
+            </div>
+
+            <!-- Loading Spinner -->
+            <template lwc:if={isLoading}>
+                <div class="slds-align_absolute-center slds-p-around_large">
+                    <lightning-spinner alternative-text="Loading activities..." size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- Error State -->
+            <template lwc:if={error}>
+                <div class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_medium" role="alert">
+                    <span class="slds-assistive-text">Error</span>
+                    <h2>Error loading activities. Please try again.</h2>
+                </div>
+            </template>
+
+            <template lwc:if={isLoading}>
+            </template>
+            <template lwc:elseif={hasActivities}>
+                <!-- Timeline -->
+                <div class="slds-timeline">
+                    <template for:each={filteredActivities} for:item="activity">
+                        <div key={activity.Id} class="slds-timeline__item_expandable">
+                            <span class="slds-assistive-text">{activity.Activity_Type__c}</span>
+                            <div class="slds-media">
+                                <!-- Activity Icon -->
+                                <div class="slds-media__figure">
+                                    <div class="slds-timeline__icon">
+                                        <template lwc:if={activity.Activity_Type__c}>
+                                            <template lwc:if={activity.isCall}>
+                                                <lightning-icon
+                                                    icon-name="standard:log_a_call"
+                                                    size="small"
+                                                ></lightning-icon>
+                                            </template>
+                                            <template lwc:elseif={activity.isEmail}>
+                                                <lightning-icon
+                                                    icon-name="standard:email"
+                                                    size="small"
+                                                ></lightning-icon>
+                                            </template>
+                                            <template lwc:elseif={activity.isMeeting}>
+                                                <lightning-icon
+                                                    icon-name="standard:event"
+                                                    size="small"
+                                                ></lightning-icon>
+                                            </template>
+                                            <template lwc:else>
+                                                <lightning-icon
+                                                    icon-name="standard:task"
+                                                    size="small"
+                                                ></lightning-icon>
+                                            </template>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <!-- Activity Content -->
+                                <div class="slds-media__body">
+                                    <div class="slds-grid slds-grid_align-spread slds-timeline__trigger">
+                                        <div class="slds-grid slds-grid_vertical-align-center slds-truncate">
+                                            <h3>
+                                                <strong>{activity.Activity_Type__c}</strong>
+                                            </h3>
+
+                                            <!-- Outcome Badge -->
+                                            <template lwc:if={activity.Outcome__c}>
+                                                <span class="slds-m-left_small">
+                                                    <template lwc:if={activity.isPositiveOutcome}>
+                                                        <span class="slds-badge slds-theme_success">{activity.Outcome__c}</span>
+                                                    </template>
+                                                    <template lwc:elseif={activity.isNeutralOutcome}>
+                                                        <span class="slds-badge">{activity.Outcome__c}</span>
+                                                    </template>
+                                                    <template lwc:else>
+                                                        <span class="slds-badge slds-theme_error">{activity.Outcome__c}</span>
+                                                    </template>
+                                                </span>
+                                            </template>
+                                        </div>
+
+                                        <!-- Date -->
+                                        <div class="slds-timeline__actions slds-timeline__actions_inline">
+                                            <p class="slds-timeline__date">
+                                                <lightning-formatted-date-time
+                                                    value={activity.Activity_Date__c}
+                                                    year="numeric"
+                                                    month="short"
+                                                    day="2-digit"
+                                                    hour="2-digit"
+                                                    minute="2-digit"
+                                                ></lightning-formatted-date-time>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Notes (truncated) -->
+                                    <template lwc:if={activity.Notes__c}>
+                                        <p class="slds-m-top_x-small slds-text-body_small slds-text-color_weak slds-truncate"
+                                           title={activity.Notes__c}>
+                                            {activity.Notes__c}
+                                        </p>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <template lwc:else>
+                <!-- Empty State -->
+                <div class="slds-illustration slds-illustration_small slds-p-around_large">
+                    <div class="slds-align_absolute-center">
+                        <div class="slds-text-longform">
+                            <h3 class="slds-text-heading_medium">No Activities</h3>
+                            <p class="slds-text-body_regular slds-text-color_weak">
+                                No activities have been logged for this deal yet.
+                                Click "Add Activity" to record a new activity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

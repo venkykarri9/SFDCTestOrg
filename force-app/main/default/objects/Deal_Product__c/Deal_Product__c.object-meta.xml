@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Deal Product</label>
+    <pluralLabel>Deal Products</pluralLabel>
+    <nameField>
+        <label>Deal Product Name</label>
+        <displayFormat>DPROD-{0000}</displayFormat>
+        <type>AutoNumber</type>
+    </nameField>
+    <sharingModel>ControlledByParent</sharingModel>
+    <deploymentStatus>Deployed</deploymentStatus>
+</CustomObject>

@@ -1,0 +1,137 @@
+<template>
+    <lightning-card title="Territory Leaderboard" icon-name="standard:reward">
+        <div class="slds-p-around_medium">
+            <!-- Loading Spinner -->
+            <template lwc:if={isLoading}>
+                <div class="slds-align_absolute-center slds-p-around_large">
+                    <lightning-spinner alternative-text="Loading leaderboard..." size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- Error State -->
+            <template lwc:if={error}>
+                <div class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_medium" role="alert">
+                    <span class="slds-assistive-text">Error</span>
+                    <h2>Error loading leaderboard data. Please try again.</h2>
+                </div>
+            </template>
+
+            <template lwc:if={isLoading}>
+            </template>
+            <template lwc:elseif={hasData}>
+                <!-- Leaderboard Table -->
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Rank">Rank</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Territory Name">Territory Name</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Manager">Manager</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Target">Target</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Actual">Actual</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="Attainment %">Attainment %</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col" style="min-width: 200px;">
+                                <div class="slds-truncate" title="Progress">Progress</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={territories} for:item="territory">
+                            <tr key={territory.Id} class="slds-hint-parent">
+                                <!-- Rank -->
+                                <td data-label="Rank">
+                                    <div class="slds-truncate">
+                                        <template lwc:if={territory.rank}>
+                                            <span class="slds-badge slds-badge_lightest">
+                                                <strong>{territory.rank}</strong>
+                                            </span>
+                                        </template>
+                                    </div>
+                                </td>
+
+                                <!-- Territory Name -->
+                                <td data-label="Territory Name">
+                                    <div class="slds-truncate" title={territory.Name}>
+                                        <strong>{territory.Name}</strong>
+                                    </div>
+                                </td>
+
+                                <!-- Manager -->
+                                <td data-label="Manager">
+                                    <div class="slds-truncate" title={territory.Territory_Manager__r.Name}>
+                                        <template lwc:if={territory.Territory_Manager__r}>
+                                            {territory.Territory_Manager__r.Name}
+                                        </template>
+                                        <template lwc:else>
+                                            <span class="slds-text-color_weak">Unassigned</span>
+                                        </template>
+                                    </div>
+                                </td>
+
+                                <!-- Target -->
+                                <td data-label="Target">
+                                    <div class="slds-truncate">{territory.formattedTarget}</div>
+                                </td>
+
+                                <!-- Actual -->
+                                <td data-label="Actual">
+                                    <div class="slds-truncate">{territory.formattedActual}</div>
+                                </td>
+
+                                <!-- Attainment % -->
+                                <td data-label="Attainment %">
+                                    <div class="slds-truncate">
+                                        <span class={territory.cssClass}>
+                                            <strong>
+                                                <lightning-formatted-number
+                                                    value={territory.attainment}
+                                                    format-style="percent-fixed"
+                                                    maximum-fraction-digits="1"
+                                                ></lightning-formatted-number>
+                                            </strong>
+                                        </span>
+                                    </div>
+                                </td>
+
+                                <!-- Progress Bar -->
+                                <td data-label="Progress">
+                                    <div class="slds-p-right_medium">
+                                        <lightning-progress-bar
+                                            value={territory.attainment}
+                                            variant={territory.progressVariant}
+                                            size="medium"
+                                        ></lightning-progress-bar>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </template>
+            <template lwc:else>
+                <!-- Empty State -->
+                <div class="slds-illustration slds-illustration_small slds-p-around_large">
+                    <div class="slds-align_absolute-center">
+                        <div class="slds-text-longform">
+                            <h3 class="slds-text-heading_medium">No Territory Data</h3>
+                            <p class="slds-text-body_regular slds-text-color_weak">
+                                No territory performance data is available at this time.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
